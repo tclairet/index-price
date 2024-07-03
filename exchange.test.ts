@@ -1,27 +1,27 @@
-import { binance, kraken, huobi, krakenWS} from './exchange';
+import * as exchange from './exchange';
 
 describe('testing exchanges', () => {
     const limit = 10
     test('binance', async () => {
-        const orderBook = await binance.getOrderBook(limit)
+        const orderBook = await exchange.binance.getOrderBook(limit)
         expect(orderBook.asks.length).toBe(limit)
         expect(orderBook.bids.length).toBe(limit)
     });
 
     test('kraken', async () => {
-        const orderBook = await kraken.getOrderBook(limit)
+        const orderBook = await exchange.kraken.getOrderBook(limit)
         expect(orderBook.asks.length).toBe(limit)
         expect(orderBook.bids.length).toBe(limit)
     });
 
     test('huobi', async () => {
-        const orderBook = await huobi.getOrderBook(limit)
+        const orderBook = await exchange.huobi.getOrderBook(limit)
         expect(orderBook.asks.length).toBe(limit)
         expect(orderBook.bids.length).toBe(limit)
     })
 
     test('krakenWS', async () => {
-        const orderBook = await krakenWS.getOrderBook(limit)
+        const orderBook = await exchange.krakenWS.getOrderBook(limit)
         expect(orderBook.asks.length).toBe(limit)
         expect(orderBook.bids.length).toBe(limit)
     });

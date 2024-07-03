@@ -4,7 +4,7 @@ import * as price from './price'  ;
 async function fetchMidPrices() {
     const limit = 10
 
-    let midPrices: number[] = []
+    const midPrices: number[] = []
     console.log('mid prices');
     await Promise.all(exchanges.map(async (exchange) => {
         console.time(exchange.name)

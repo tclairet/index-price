@@ -7,7 +7,7 @@ export interface Exchange {
     getOrderBook(limit: number): Promise<OrderBook>;
 }
 
-export let binance: Exchange = {
+export const binance: Exchange = {
     name: "binance",
 
     async getOrderBook(limit: number): Promise<OrderBook> {
@@ -24,13 +24,13 @@ export let binance: Exchange = {
                 bids: response.data.bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
             };
         }
-        catch(error: any) {
-            throw error;
+        catch(error) {
+            throw('exchange ' + this.name + ' unexpected error: ' + error)
         }
     }
 }
 
-export let kraken: Exchange = {
+export const kraken: Exchange = {
     name: "kraken",
 
     async getOrderBook(limit: number): Promise<OrderBook> {
@@ -48,13 +48,13 @@ export let kraken: Exchange = {
                 bids: response.data.result[pair].bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
             };
         }
-        catch(error: any) {
-            throw error;
+        catch(error) {
+            throw('exchange ' + this.name + ' unexpected error: ' + error)
         }
     }
 }
 
-export let huobi: Exchange = {
+export const huobi: Exchange = {
     name: "huobi",
 
     async getOrderBook(limit: number): Promise<OrderBook> {
@@ -70,13 +70,13 @@ export let huobi: Exchange = {
                 bids: response.data.tick.bids,
             }
         }
-        catch(error: any) {
-            throw error;
+        catch(error) {
+            throw('exchange ' + this.name + ' unexpected error: ' + error)
         }
     }
 }
 
-export let krakenWS: Exchange = {
+export const krakenWS: Exchange = {
     name: "krakenWS",
 
     async getOrderBook(limit: number): Promise<OrderBook> {
@@ -115,4 +115,4 @@ export let krakenWS: Exchange = {
     }
 }
 
-export let exchanges: Exchange[] = [binance, huobi, kraken, krakenWS]
+export const exchanges: Exchange[] = [binance, huobi, krakenWS]

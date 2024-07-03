@@ -114,3 +114,5 @@ export let krakenWS: Exchange = {
         })
     }
 }
+
+export let exchanges: Exchange[] = [binance, huobi, kraken, krakenWS]

@@ -1,14 +1,10 @@
 import axios from 'axios';
 import WebSocket from 'ws';
+import { OrderBook } from './types';
 
-interface Exchange {
+export interface Exchange {
     name: string;
     getOrderBook(limit: number): Promise<OrderBook>;
-}
-
-type OrderBook = {
-    bids: number[][]
-    asks: number[][]
 }
 
 export let binance: Exchange = {
@@ -24,8 +20,8 @@ export let binance: Exchange = {
         try {
             const response = await axios.request(options)
             return {
-                bids: response.data.bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
                 asks: response.data.asks.map((ask: [string, string]) => [parseFloat(ask[0]), parseFloat(ask[1])]),
+                bids: response.data.bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
             };
         }
         catch(error: any) {
@@ -48,8 +44,8 @@ export let kraken: Exchange = {
         try {
             const response = await axios.request(options)
             return {
-                bids: response.data.result[pair].bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
                 asks: response.data.result[pair].asks.map((ask: [string, string]) => [parseFloat(ask[0]), parseFloat(ask[1])]),
+                bids: response.data.result[pair].bids.map((bid: [string, string]) => [parseFloat(bid[0]), parseFloat(bid[1])]),
             };
         }
         catch(error: any) {
@@ -70,8 +66,8 @@ export let huobi: Exchange = {
         try {
             const response = await axios.request(options)
             return {
-                bids: response.data.tick.bids,
                 asks: response.data.tick.asks,
+                bids: response.data.tick.bids,
             }
         }
         catch(error: any) {

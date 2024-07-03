@@ -1,9 +1,9 @@
 {
   "name": "index-price",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "npx ts-node index.ts",
+    "start": "npx ts-node src/index.ts",
     "test": "jest"
   },
   "keywords": [],

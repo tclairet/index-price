@@ -1,7 +1,8 @@
 import axios from 'axios';
+import WebSocket from 'ws';
 
 interface Exchange {
-    name: string
+    name: string;
     getOrderBook(limit: number): Promise<OrderBook>;
 }
 
@@ -76,5 +77,44 @@ export let huobi: Exchange = {
         catch(error: any) {
             throw error;
         }
+    }
+}
+
+export let krakenWS: Exchange = {
+    name: "krakenWS",
+
+    async getOrderBook(limit: number): Promise<OrderBook> {
+        return new Promise<OrderBook>((resolve, reject) => {
+            const ws = new WebSocket('wss://ws.kraken.com')
+
+            ws.on('open', () => {
+                const sub = {
+                    event: 'subscribe',
+                    pair: ['XBT/USD'],
+                    subscription: {
+                        name: 'book',
+                        depth: limit,
+                    }
+                }
+                ws.send(JSON.stringify(sub))
+            })
+
+            ws.on('message', (data) => {
+                const message = JSON.parse(data.toString())
+
+                if (message.status == 'error') {
+                    reject(message.errorMessage)
+                }
+                if (Array.isArray(message) && message[1]?.as && message[1]?.bs) {
+                    const orderBook: OrderBook = {
+                        asks: message[1].as.map((ask: string[]) => [parseFloat(ask[0]), parseFloat(ask[1])]),
+                        bids: message[1].bs.map((bid: string[]) => [parseFloat(bid[0]), parseFloat(bid[1])])
+                    }
+                    resolve(orderBook)
+                    ws.close()
+                }
+            })
+            ws.on('error', reject)
+        })
     }
 }
